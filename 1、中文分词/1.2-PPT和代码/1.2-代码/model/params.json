@@ -1,0 +1,4 @@
+{
+  "embedding_dim": 128,
+  "hidden_num": 100
+}
