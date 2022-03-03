@@ -5,7 +5,7 @@ from keywords.word_discover import WordDiscover
 
 class MyTestCase(unittest.TestCase):
     def setUp(self) -> None:
-        data_path = 'tests/test_data/sports_1000.txt'
+        data_path = './test_data/sports_1000.txt'
         self.samples = []
         with open(data_path, 'r', encoding='utf-8') as f:
             for line in f:

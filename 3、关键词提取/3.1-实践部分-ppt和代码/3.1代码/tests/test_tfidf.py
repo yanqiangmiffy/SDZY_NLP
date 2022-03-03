@@ -8,8 +8,8 @@ class TestKeyword(unittest.TestCase):
 
     def setUp(self):
         self.tfidf = TFIDF()
-        self.seg_data_dir = 'tests/test_data/seg_data'
-        self.idf_file_path = './tests/test_data/idf.txt'
+        self.seg_data_dir = './test_data/seg_data'
+        self.idf_file_path = './test_data/idf.txt'
 
     def test_tf_idf(self):
         print('test_train_idf~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
