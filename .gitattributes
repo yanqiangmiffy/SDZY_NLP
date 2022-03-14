@@ -3,4 +3,4 @@
 *.rar filter=lfs diff=lfs merge=lfs -text
 1、中文分词/1.4-实践-PPT和代码/1.4-代码[[:space:]]copy/segment/data/ filter=lfs diff=lfs merge=lfs -text
 *.pptx filter=lfs diff=lfs merge=lfs -text
-8.png filter=lfs diff=lfs merge=lfs -text
+*.png filter=lfs diff=lfs merge=lfs -text
