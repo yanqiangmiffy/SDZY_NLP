@@ -75,9 +75,9 @@ class BertCRFTrainer(BaseTrainer):
                 [-1] + [self.vocab.tag2id[_label] for _label in labels] + [-1] +  # [CLS]、[SEP]用-1填充
                 [self.vocab.pad_tag_id] * (max_length - len(labels) - 2)  # 尾部用pad填充
             )
-        batch_input_ids = torch.cat(batch_input_ids)
-        batch_att_mask = torch.cat(batch_att_mask)
-        batch_label_ids = torch.LongTensor(batch_label_ids)
+        batch_input_ids = torch.cat(batch_input_ids)  # [batch, seq_len]
+        batch_att_mask = torch.cat(batch_att_mask)  # [batch, seq_len]
+        batch_label_ids = torch.LongTensor(batch_label_ids)  # [batch, seq_len]
 
         batch_input_ids, batch_att_mask, batch_label_ids = \
             batch_input_ids.to(self.device), batch_att_mask.to(self.device), batch_label_ids.to(self.device)
@@ -177,6 +177,10 @@ class BertCRFTrainer(BaseTrainer):
             return acc, loss
 
     def _get_acc_one_step(self, logits, labels_batch):
+        """
+        logits:[batch, seq_len, tag_size]
+        labels_batch: [batch, seq_len]
+        """
         total, correct = 0, 0
         for logit, labels in zip(logits, labels_batch):
             active_logit = logit[labels != self.vocab.pad_tag_id][1:-1]  # 去除pad部分、[CLS]和[SEP]部分

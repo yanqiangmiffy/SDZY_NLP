@@ -7,8 +7,8 @@ from ner.models.bert_crf.bert_crf_trainer import BertCRFTrainer
 class MyTestCase(unittest.TestCase):
 
     def setUp(self) -> None:
-        self.model_dir = './tests/test_model/bertcrf'
-        self.pretrained_model_dir = './model/chinese-bert-wwm'
+        self.model_dir = '../tests/test_model/bertcrf'
+        self.pretrained_model_dir = '../model/chinese-bert-wwm'
 
     def test_trainer(self):
         texts = [

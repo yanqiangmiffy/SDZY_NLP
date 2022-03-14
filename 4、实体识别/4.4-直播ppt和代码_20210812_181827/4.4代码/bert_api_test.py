@@ -1,6 +1,6 @@
 import torch
 from transformers import BertTokenizer, BertModel
-
+from transformers import AutoTokenizer, AutoModelForMaskedLM
 """
 分类或序列标注任务，
 单句子输入bert演示
@@ -17,7 +17,8 @@ texts = [
 # chinese-bert-wwm和bert-base-chinese没有太大区别，具体区别后面讲
 # （如果你已下载好bert-base-chinese，可以换成bert-base-chinese）
 bert_tokenizer = BertTokenizer.from_pretrained('./model/chinese-bert-wwm')
-
+# bert_tokenizer = AutoTokenizer.from_pretrained('./model/chinese-bert-wwm')
+bert_tokenizer.encode_plus()
 # 获得bert的输入，input_ids和att_mask
 # input_ids存放id形式的文本，att_mask非pad部分为1，否则为0
 batch_input_ids, batch_att_mask = [], []
@@ -33,6 +34,7 @@ batch_att_mask = torch.cat(batch_att_mask)
 
 # 加载bert模型
 bert_model = BertModel.from_pretrained('./model/chinese-bert-wwm')
+# bert_model = AutoModelForMaskedLM.from_pretrained('./model/chinese-bert-wwm')
 
 # 推理，查看bert输出
 with torch.no_grad():

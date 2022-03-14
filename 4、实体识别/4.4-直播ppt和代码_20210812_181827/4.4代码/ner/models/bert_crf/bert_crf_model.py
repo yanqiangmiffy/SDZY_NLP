@@ -19,9 +19,9 @@ class BertCRFModel(nn.Module):
         last_hidden_state, pooled_output = self.bert_model(
             input_ids=input_ids, attention_mask=attention_mask, token_type_ids=token_type_ids,
             position_ids=position_ids, head_mask=head_mask, inputs_embeds=None
-        )
-        seq_outs = self.dropout(last_hidden_state)
-        logits = self.linear(seq_outs)
+        )  # [batch, seq_len, hidden_size], [batch, hidden_size]
+        seq_outs = self.dropout(last_hidden_state)  # [batch, seq_len, hidden_size]
+        logits = self.linear(seq_outs)  # [batch, seq_len, label_size]
 
         if labels is not None:
             loss_func = nn.CrossEntropyLoss(ignore_index=-1)  # 忽略值为-1的label，不参与loss计算

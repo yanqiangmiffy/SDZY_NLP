@@ -73,6 +73,7 @@ class BiLSTM_CRF(nn.Module):
         self.transitions = nn.Parameter(
             torch.randn(self.tagset_size, self.tagset_size)
         )
+        # self.transitions = nn.Linear(self.tagset_size, self.tagset_size)
 
         # 使不能出现 转移到START_TAG
         self.transitions.data[tag_to_ix[START_TAG], :] = -10000
