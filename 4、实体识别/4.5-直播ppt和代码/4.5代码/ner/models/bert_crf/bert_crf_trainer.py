@@ -1,6 +1,6 @@
 import json
 import math
-
+import os
 import torch
 from sklearn.utils import shuffle
 from transformers import AdamW
@@ -16,6 +16,8 @@ class BertCRFTrainer(BaseTrainer):
                  vocab_name='vocab.json'):
         self.pretrained_model_dir = pretrained_model_dir
         self.model_dir = model_dir
+        if not os.path.exists(self.model_dir):
+            os.mkdir(self.model_dir)
         self.ckpt_name = ckpt_name
         self.vocab_name = vocab_name
 

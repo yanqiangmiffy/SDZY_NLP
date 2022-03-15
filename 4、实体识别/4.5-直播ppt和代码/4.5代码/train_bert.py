@@ -33,20 +33,30 @@ train_texts, train_labels = read_conll('./data/weiboNER.conll.train')
 dev_texts, dev_labels = read_conll('./data/weiboNER.conll.dev')
 test_texts, test_labels = read_conll('./data/weiboNER.conll.test')
 
+# chinese-bert-wwm:
+
+# albert_chinese_base:
+# learning_rate=5e-5 ,epoch=4 >>   0
+# learning_rate=5e-5 ,epoch=2 >>   0
+# learning_rate=2e-5 ,epoch=3 >>   0
+
+pretrained_model = 'chinese-bert-wwm'
+pretrained_model_dir = f'../../../models/{pretrained_model}'
 # 实例化trainer，设置参数，训练
 trainer = BertCRFTrainer(
-    pretrained_model_dir='./model/bert-base-chinese', model_dir='./tmp/bercrf', learning_rate=5e-5
+    pretrained_model_dir=pretrained_model_dir, model_dir=f'./tmp/bercrf-{pretrained_model}', learning_rate=2e-5
 )
 trainer.train(
-    train_texts, train_labels, validate_texts=dev_texts, validate_labels=dev_labels, batch_size=16, epoch=4
+    train_texts, train_labels, validate_texts=dev_texts, validate_labels=dev_labels, batch_size=16, epoch=3
 )
 
 # 实例化predictor，加载模型
-predictor = BERTCRFPredictor(pretrained_model_dir='./model/bert-base-chinese', model_dir='./tmp/bercrf')
+predictor = BERTCRFPredictor(pretrained_model_dir=pretrained_model_dir, model_dir=f'./tmp/bercrf-{pretrained_model}')
 predict_labels = predictor.predict(test_texts, batch_size=20)
 
+dev_results_path = 'tmp/dev_results.txt'
 # 将结果输出为3列
-out = open('tmp/dev_results.txt', 'w', encoding='utf-8')
+out = open(dev_results_path, 'w', encoding='utf-8')
 for text, each_true_labels, each_predict_labels in zip(test_texts, test_labels, predict_labels):
     for char, true_label, predict_label in zip(text, each_true_labels, each_predict_labels):
         out.write('{}\t{}\t{}\n'.format(char, true_label, predict_label))
@@ -54,4 +64,4 @@ for text, each_true_labels, each_predict_labels in zip(test_texts, test_labels, 
 out.close()
 
 # 评估
-evaluate.eval('tmp/dev_results.txt')
+evaluate.eval(dev_results_path)

@@ -2,7 +2,7 @@ import torch.nn as nn
 from transformers import AlbertTokenizer, AlbertModel
 from transformers import BertTokenizer, BertModel
 from transformers import ElectraTokenizer, ElectraModel
-
+from transformers import AutoTokenizer, AutoModelForMaskedLM
 from ner.models.crf.crf_layer import CRF
 
 
@@ -16,6 +16,11 @@ class BertCRFModel(nn.Module):
             # 注意albert base使用bert tokenizer，参考https://huggingface.co/voidful/albert_chinese_base
             self.bert_tokenizer = BertTokenizer.from_pretrained(bert_base_model_dir)
             self.bert_model = AlbertModel.from_pretrained(bert_base_model_dir)
+            # self.bert_tokenizer = AutoTokenizer.from_pretrained("voidful/albert_chinese_base",
+            #                                                     cache_dir='./model/albert_chinese_base')
+            # #
+            # self.bert_model = AutoModelForMaskedLM.from_pretrained("voidful/albert_chinese_base", 
+            #                                                        cache_dir='./model/albert_chinese_base')
         elif 'electra' in bert_base_model_dir.lower():
             self.bert_tokenizer = ElectraTokenizer.from_pretrained(bert_base_model_dir)
             self.bert_model = ElectraModel.from_pretrained(bert_base_model_dir)
