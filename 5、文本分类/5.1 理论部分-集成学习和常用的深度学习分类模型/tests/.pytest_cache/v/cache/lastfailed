@@ -1,0 +1,4 @@
+{
+  "test_label_smoothing_ce.py::MyTestCase::test_something": true,
+  "test_torch_bert_fc.py": true
+}
