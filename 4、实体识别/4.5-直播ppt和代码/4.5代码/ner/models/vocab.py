@@ -107,3 +107,14 @@ class Vocab(object):
 
     def set_pad_tag_id(self, pad_tag_id):
         self.pad_tag_id = pad_tag_id
+
+    def convert_tag2id(self, tags):
+        ids = []
+        for tag in tags:
+            ids.append(self.tag2id.get(tag, f'unk tag:{tag}'))
+
+    def convert_id2tag(self, ids):
+        tags = []
+        for _id in ids:
+            tags.append(self.id2tag.get(_id, f'unk id:{_id}'))
+        return tags

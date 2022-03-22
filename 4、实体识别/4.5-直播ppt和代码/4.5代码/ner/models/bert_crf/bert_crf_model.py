@@ -42,9 +42,9 @@ class BertCRFModel(nn.Module):
         if isinstance(self.bert_model, ElectraModel):
             last_hidden_state, = bert_out
         else:
-            last_hidden_state, pooled_output = bert_out
+            last_hidden_state, pooled_output = bert_out  # pooled_output:[batch, hidden_size] last_hidden_state:[batch, seq, hdden]
         seq_outs = self.dropout(last_hidden_state)
-        logits = self.linear(seq_outs)
+        logits = self.linear(seq_outs)  # [batch, seq_len, tag_size]
 
         lengths = attention_mask.sum(axis=1)
         best_paths = self.crf.get_batch_best_path(logits, lengths)

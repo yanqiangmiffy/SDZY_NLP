@@ -141,9 +141,9 @@ class BertCRFTrainer(BaseTrainer):
                 avg_loss = sum(loss_buff) / len(loss_buff) if len(loss_buff) == max_loss_num else None
 
                 logger.info(
-                    'epoch %d, step %d, train loss %.4f, train acc %.4f, valid loss %.4f valid acc %.4f, '
-                    'last %d avg valid loss %s' % (
-                        epoch, step, loss, train_acc, valid_loss, valid_acc, max_loss_num,
+                    f'epoch {epoch}, step {step}, train loss %.4f, train acc %.4f, valid loss %.4f valid acc %.4f, '
+                    f'last {max_loss_num} avg valid loss %s' % (
+                        loss, train_acc, valid_loss, valid_acc,
                         '%.4f' % avg_loss if avg_loss else avg_loss
                     )
                 )

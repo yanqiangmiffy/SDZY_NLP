@@ -28,7 +28,7 @@ import json
 from metrics import EntityScore
 
 
-def eval(dev_file):
+def eval(dev_file, entity_types=None):
     with open(dev_file, 'r', encoding='utf-8', errors='ignore') as f:
         predict_tags, actual_tags = [], []
         for example in f.read().split('\n\n'):  # 迭代每条样本
@@ -41,5 +41,5 @@ def eval(dev_file):
                     continue
                 char, actual_label, predict_label = term.split('\t')
                 predict_tags[-1].append(predict_label), actual_tags[-1].append(actual_label)
-        r = EntityScore.multi_entities_score(predict_tags, actual_tags)
+        r = EntityScore.multi_entities_score(predict_tags, actual_tags, entity_types)
         print(json.dumps(r, indent=4))

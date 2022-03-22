@@ -18,7 +18,6 @@ texts = [
 # （如果你已下载好bert-base-chinese，可以换成bert-base-chinese）
 bert_tokenizer = BertTokenizer.from_pretrained('./model/chinese-bert-wwm')
 # bert_tokenizer = AutoTokenizer.from_pretrained('./model/chinese-bert-wwm')
-bert_tokenizer.encode_plus()
 # 获得bert的输入，input_ids和att_mask
 # input_ids存放id形式的文本，att_mask非pad部分为1，否则为0
 batch_input_ids, batch_att_mask = [], []

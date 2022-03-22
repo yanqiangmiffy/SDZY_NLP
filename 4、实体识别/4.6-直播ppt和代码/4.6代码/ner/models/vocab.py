@@ -1,5 +1,5 @@
 import json
-
+import math
 from ner import logger
 
 
@@ -12,11 +12,20 @@ class Vocab(object):
         self.id2vocab = id2vocab
         self.tag2id = tag2id
         self.id2tag = id2tag
+        self.tag_count = {}
         self.vocab_size = 0 if not vocab2id else len(vocab2id)
         self.label_size = 0 if not tag2id else len(tag2id)
         self.unk_vocab_id = unk_vocab_id
         self.pad_vocab_id = pad_vocab_id
         self.pad_tag_id = pad_tag_id
+
+    def get_tag_weight(self):
+        weight = [1]*self.label_size
+        for label, idx in self.tag2id.items():
+            weight[idx] = self.tag_count.get(label, 1)
+        total = sum(weight)
+        weight = list(map(lambda x: 1-x/total, weight))
+        return weight
 
     def build_vocab(self, texts=None, labels=None, build_texts=True, build_labels=True, with_build_in_tag_id=True):
         """构建词汇表"""
@@ -45,6 +54,7 @@ class Vocab(object):
                 tag_cnt = 0
             for label in labels:
                 for each_label in label:
+                    self.tag_count[each_label] = self.tag_count.get(each_label, 0) + 1
                     if each_label in self.tag2id:
                         continue
                     self.tag2id[each_label] = tag_cnt

@@ -1,5 +1,6 @@
 import json
 import math
+import os
 
 import torch
 from sklearn.utils import shuffle
@@ -18,6 +19,8 @@ class BertCRFTrainer(BaseTrainer):
                  loss_type='crf_loss', focal_loss_gamma=2, focal_loss_alpha=None):  # # # 增加loss相关参数
         self.pretrained_model_dir = pretrained_model_dir
         self.model_dir = model_dir
+        if not os.path.exists(self.model_dir):
+            os.mkdir(self.model_dir)
         self.ckpt_name = ckpt_name
         self.vocab_name = vocab_name
         self.enable_parallel = enable_parallel  # # 设置为实例变量
@@ -39,7 +42,7 @@ class BertCRFTrainer(BaseTrainer):
         self.model = BertCRFModel(
             self.pretrained_model_dir, self.vocab.label_size,
             # # # 传入loss相关参数
-            loss_type=self.loss_type, focal_loss_alpha=self.focal_loss_alpha, focal_loss_gamma=self.focal_loss_gamma
+            loss_type=self.loss_type, focal_loss_alpha=self.vocab.get_tag_weight(), focal_loss_gamma=self.focal_loss_gamma
         )
 
         # 设置AdamW优化器
@@ -77,7 +80,7 @@ class BertCRFTrainer(BaseTrainer):
             'enable_parallel': self.enable_parallel,  # # 保存是否启用并行
             'loss_type': self.loss_type,  # # # 保存到config
             'focal_loss_gamma': self.focal_loss_gamma,
-            'focal_loss_alpha': self.focal_loss_alpha,
+            'focal_loss_alpha': self.vocab.get_tag_weight(),
         }
         with open('{}/train_config.json'.format(self.model_dir), 'w') as f:
             f.write(json.dumps(config, indent=4))

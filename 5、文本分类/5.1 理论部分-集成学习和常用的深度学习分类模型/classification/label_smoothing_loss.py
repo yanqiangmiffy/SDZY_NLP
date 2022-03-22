@@ -1,6 +1,6 @@
 import torch.nn as nn
 import torch.nn.functional as F
-
+import torch
 
 class LabelSmoothingCrossEntropy(nn.Module):
     """标签平滑过的交叉熵loss"""
@@ -21,17 +21,20 @@ class LabelSmoothingCrossEntropy(nn.Module):
         log_preds = F.log_softmax(logits, dim=-1)
 
         # 计算非target部分的loss
+        log_preds_copy = log_preds.clone()
+        for i in range(target.size()[0]):
+            log_preds_copy[i, target[i]] = 0.
         if self.reduction == 'sum':
-            no_target_loss = -log_preds.sum()
+            no_target_loss = -log_preds_copy.sum()
         else:
-            no_target_loss = -log_preds.sum(dim=-1)  # 沿着label维度求和
+            no_target_loss = -log_preds_copy.sum(dim=-1)  # 沿着label维度求和
             if self.reduction == 'mean':
                 no_target_loss = no_target_loss.mean()  # 沿着batch维度平均
         no_target_loss = self.alpha / K * no_target_loss  # 乘上非target部分的yi
 
         # 计算target部分的loss
         # 借助torch自带的计算交叉熵的函数F.nll_loss，并乘上target部分的yi
-        target_loss = (1 - self.alpha) * F.nll_loss(log_preds, target,
-                                                    reduction=self.reduction, ignore_index=self.ignore_index)
+        # F.nll_loss: 根据target的索引取出log_preds每行对应的值，然后进行负号操作，F.nll_loss+F.log_softmax = 交叉熵
+        target_loss = (1 - self.alpha) * F.nll_loss(log_preds, target,reduction=self.reduction, ignore_index=self.ignore_index)
 
         return no_target_loss + target_loss

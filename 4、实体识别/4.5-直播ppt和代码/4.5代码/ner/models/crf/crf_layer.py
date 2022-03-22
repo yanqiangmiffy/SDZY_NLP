@@ -79,7 +79,7 @@ class CRF(nn.Module):
         我们希望P_real_path_score的概率越高越好，即target_function的值越大越好
         因此，loss_function取其相反数，越小越好
         loss_function = -log(target_function)
-                      = -S_real_path_score + log(exp(S_1 + exp(S_2) + exp(S_3) + ...))
+                      = -S_real_path_score + log(exp(S_1) + exp(S_2) + exp(S_3) + ...))
                       = -S_real_path_score + log(all_possible_path_score)
         """
         if not self.use_cuda:
@@ -100,7 +100,7 @@ class CRF(nn.Module):
             loss = loss + cost
         return loss / num_chars
 
-    def viterbi(self, features):
+    def viterbi(self, features):  # features:一句文本 [seq_len, tag_size]
         time_steps = features.size(0)
         forward = Variable(torch.zeros(self.num_tag))  # START_TAG
         if self.use_cuda:
@@ -109,9 +109,13 @@ class CRF(nn.Module):
         back_points, index_points = [self.transitions[self.start_tag, :self.start_tag].cpu()], [
             torch.LongTensor([-1]).expand_as(forward)]
         for i in range(1, time_steps):  # START_TAG -> 1st word -> 2nd word ->...->END_TAG
-            emission_start = forward.expand(self.num_tag, self.num_tag).t()
+            emission_start = forward.expand(self.num_tag, self.num_tag).t() # expand: 扩张维度[tag_size] > [tag_size, tag_size]
             emission_end = features[i, :].expand(self.num_tag, self.num_tag)
-            trans_score = self.transitions[:self.start_tag, :self.start_tag].cpu()
+            # trans_score = self.transitions[:self.start_tag, :self.start_tag].cpu()
+            if i == 1:
+                trans_score = self.transitions[self.start_tag, :self.start_tag].cpu()
+            else:
+                trans_score = self.transitions[:self.start_tag, :self.start_tag].cpu()
             sum = emission_start.cpu() + emission_end.cpu() + trans_score
             forward, index = torch.max(sum.detach(), dim=0)
             back_points.append(forward)
@@ -119,7 +123,7 @@ class CRF(nn.Module):
         back_points.append(forward + self.transitions[:self.start_tag, self.end_tag].cpu())  # END_TAG
         return back_points, index_points
 
-    def get_best_path(self, features):
+    def get_best_path(self, features):  # features: [seq_len, tag_size]
         back_points, index_points = self.viterbi(features)
         # 找到线头
         best_last_point = argmax(back_points[-1])
@@ -135,7 +139,7 @@ class CRF(nn.Module):
         best_path.reverse()
         return best_path
 
-    def get_batch_best_path(self, inputs, length):
+    def get_batch_best_path(self, inputs, length):  #  inputs:[batch, seq_len, tag_size]
         if not self.use_cuda:
             inputs = inputs.cpu()
             length = length.cpu()

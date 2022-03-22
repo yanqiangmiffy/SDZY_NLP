@@ -10,7 +10,7 @@ class MyTestCase(unittest.TestCase):
         logits = torch.randn(4, 2)  # (batch_size=4, label_size=2)
         target = torch.tensor([0, 1, 1, 0])
         loss = lsce(logits, target)
-        print(loss)
+        print(loss)  # 0.8939
 
 
 if __name__ == '__main__':

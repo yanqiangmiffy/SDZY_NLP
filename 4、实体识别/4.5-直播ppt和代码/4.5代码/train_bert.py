@@ -40,14 +40,14 @@ test_texts, test_labels = read_conll('./data/weiboNER.conll.test')
 # learning_rate=5e-5 ,epoch=2 >>   0
 # learning_rate=2e-5 ,epoch=3 >>   0
 
-pretrained_model = 'chinese-bert-wwm'
+pretrained_model = 'bert-base-chinese'
 pretrained_model_dir = f'../../../models/{pretrained_model}'
 # 实例化trainer，设置参数，训练
 trainer = BertCRFTrainer(
-    pretrained_model_dir=pretrained_model_dir, model_dir=f'./tmp/bercrf-{pretrained_model}', learning_rate=2e-5
+    pretrained_model_dir=pretrained_model_dir, model_dir=f'./tmp/bercrf-{pretrained_model}', learning_rate=3e-5
 )
 trainer.train(
-    train_texts, train_labels, validate_texts=dev_texts, validate_labels=dev_labels, batch_size=16, epoch=3
+    train_texts, train_labels, validate_texts=dev_texts, validate_labels=dev_labels, batch_size=16, epoch=4
 )
 
 # 实例化predictor，加载模型

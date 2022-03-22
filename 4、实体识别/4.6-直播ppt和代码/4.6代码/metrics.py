@@ -76,5 +76,6 @@ class EntityScore(object):
             'recall': sum([metric[entity_type]['recall'] for entity_type in entity_types]) / len(entity_types),
         }
         metric['macro_avg']['f1'] = 2 * metric['macro_avg']['precision'] * metric['macro_avg']['recall'] / \
-                                    (metric['macro_avg']['precision'] + metric['macro_avg']['recall'])
+                                    (metric['macro_avg']['precision'] + metric['macro_avg']['recall']) \
+            if (metric['macro_avg']['precision'] + metric['macro_avg']['recall']) else 0.
         return metric
