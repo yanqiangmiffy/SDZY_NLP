@@ -1,0 +1,6 @@
+[2021-12-04 21:27:56,451] - [logger name :train] - [train_local.py file line:239] - INFO: world_size:-1, rank:-1, device: cpu n_gpu: 0, distributed training: False, 16-bits training: False
+[2021-12-04 21:28:15,176] - [logger name :train] - [train_local.py file line:328] - INFO: 模型参数： 1058780
+[2021-12-04 21:28:15,188] - [logger name :train] - [train_local.py file line:364] - INFO: ** ** * CUDA.empty_cache() * ** **
+[2021-12-04 21:28:15,245] - [logger name :train] - [train_local.py file line:368] - INFO: ***** Running training *****
+[2021-12-04 21:28:15,245] - [logger name :train] - [train_local.py file line:369] - INFO:   Batch size = 8
+[2021-12-04 21:28:15,246] - [logger name :train] - [train_local.py file line:370] - INFO:   Param Update Num = 800

@@ -1,0 +1,10 @@
+[2021-12-04 21:29:08,154] - [logger name :train] - [train_local.py file line:239] - INFO: world_size:-1, rank:-1, device: cpu n_gpu: 0, distributed training: False, 16-bits training: False
+[2021-12-04 21:35:33,187] - [logger name :train] - [train_local.py file line:328] - INFO: 模型参数： 1058780
+[2021-12-04 21:35:33,209] - [logger name :train] - [train_local.py file line:364] - INFO: ** ** * CUDA.empty_cache() * ** **
+[2021-12-04 21:35:33,317] - [logger name :train] - [train_local.py file line:368] - INFO: ***** Running training *****
+[2021-12-04 21:35:33,318] - [logger name :train] - [train_local.py file line:369] - INFO:   Batch size = 8
+[2021-12-04 21:35:33,318] - [logger name :train] - [train_local.py file line:370] - INFO:   Param Update Num = 800
+[2021-12-04 21:35:38,088] - [logger name :train] - [data_loader.py file line:97] - INFO: start read sentence pair...
+[2021-12-04 21:35:58,171] - [logger name :train] - [data_loader.py file line:110] - INFO: read sentence pair finished!
+[2021-12-04 22:13:30,387] - [logger name :train] - [train_local.py file line:428] - INFO: epoch:1, step:79, mlm_loss:8.9173, nsp_loss:0.6922
+[2021-12-04 22:13:30,398] - [logger name :train] - [train_local.py file line:437] - INFO: ** ** * Saving  model and optimizer * ** **， checkpoint_index：1
